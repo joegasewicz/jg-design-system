@@ -1,2 +1,6 @@
 import "../sass/index.scss";
-import "./area-landing";
+
+
+import {
+    MapComponent,
+} from "./components/map";

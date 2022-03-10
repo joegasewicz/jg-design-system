@@ -40,12 +40,12 @@ class MapState {
  }
 
 class ONSCustomControl {
-    private _controlElements: Array<HTMLElement> = [];
+    private _controlElements: Array<HTMLElement | null> = [];
     public mapState: MapState;
     public center: LngLatLike;
     public zoom: number;
-    map: Map;
-    container: HTMLButtonElement;
+    map!: Map;
+    container!: HTMLButtonElement;
 
     constructor(center: LngLatLike, zoom: number, mapState: MapState) {
         this.mapState = mapState;
@@ -56,8 +56,11 @@ class ONSCustomControl {
     set controlElements(val) {
         if (!this._controlElements.length) {
         this._controlElements = val.map((elem, i) => {
-            elem.setAttribute("tabindex", 0 .toString());
-            return elem;
+            if (elem) {
+                elem.setAttribute("tabindex", 0 .toString());
+                return elem;
+            }
+            return null;
         });
         } else {
         throw new Error("Attribute 'controlElements' already set");
@@ -78,8 +81,10 @@ class ONSCustomControl {
     }
 
     public onRemove() {
-        this.container.parentNode.removeChild(this.container);
-        this.map = undefined;
+        if (this.container.parentNode) {
+            this.container.parentNode.removeChild(this.container);
+            (this.map as any) = null;
+        }
     }
 
     private onReset = (e: Event) => {
@@ -111,7 +116,7 @@ class ONSCustomControl {
 }
 
 export class MapComponent {
-    public mapState: MapState;
+    public mapState!: MapState;
     public readonly map: Map;
     private onsCustomControls!: ONSCustomControl;
     public readonly bounds: LngLatBoundsLike = [
@@ -125,7 +130,7 @@ export class MapComponent {
     public readonly mapID: any;
 
     constructor(options: IMapComponentOptions) {
-        const { style, center, zoom, token, mapID } = options;
+        const { style, center, zoom = 6, token, mapID } = options;
         this.style = style;
         this.center = center;
         this.zoom = zoom;
@@ -200,6 +205,8 @@ export class MapComponent {
         ctrlElement.appendChild(ctrlSpan); // Move container element to zoom control container div
       
         const containerZoomDiv = document.querySelector("#map > .mapboxgl-control-container > .mapboxgl-ctrl-top-right > div:nth-child(2)");
-        containerZoomDiv.appendChild(ctrlElement);
+        if (containerZoomDiv) {
+            containerZoomDiv.appendChild(ctrlElement);
+        }
       }
 }

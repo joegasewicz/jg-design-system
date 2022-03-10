@@ -2,7 +2,9 @@
   "name": "jg-design-system",
   "version": "1.0.0",
   "description": "poc",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "module": "lib/index.js",
   "scripts": {
     "webpack": "webpack",
     "build:dev": "webpack --config webpack/webpack.config.js --env mode=development",
