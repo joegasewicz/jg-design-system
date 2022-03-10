@@ -1,0 +1,143 @@
+// Variables
+$map-width: 464px;
+$button-width: 29px;
+$color-black: #222222;
+$color-grey-15: #E2E2E3;
+$color-grey-5: #F5F5F6;
+$color-sun-yellow: #FBC900;
+$color-white: #FFFFFF;
+$mapbox-ctrl-margin: 9px;
+$mapbox-ctrl-radius: 4px;
+$mapbox-ctrl-zindex: 2;
+$mapbox-ctrl-zindex-hover: 3;
+
+// Mixins
+@mixin mapbox-ctrl-badge($content) {
+    &::before {
+        content: $content;
+        background: black;
+        color: white;
+        margin-right: 4px;
+        position: absolute;
+        right: 37px;
+        font-size: 14px;
+        white-space: nowrap;
+        padding: 5px 9px;
+        border-radius: $mapbox-ctrl-radius;
+    }
+}
+
+@mixin mapbox-ctrl-icon($name, $content) {
+    .mapboxgl-ctrl-#{$name} {
+        .mapboxgl-ctrl-icon {
+            // background-image: url("../img/#{$name}-icon.svg"); TODO
+            &:hover {
+                // background-image: url("../img/#{$name}-white-icon.svg"); TODO
+                @include mapbox-ctrl-badge($content);
+            }
+            @content;
+        }
+    }
+}
+
+// Mapbox styles
+#map {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $map-width;
+    height: $map-width;
+    // @include breakpoint(md) { // TODO
+    //     width: auto;
+    //     display: block;
+    // }
+    canvas {
+        &:focus {
+            border: $color-sun-yellow solid 2px;
+        }
+    }
+    /** -------- Controls Resets --------- */
+    .mapboxgl-ctrl-fullscreen {
+        width: 100px;
+        height: 30px;
+    }
+    .mapboxgl-control-container {
+        .mapboxgl-ctrl-top-right {
+            margin: $mapbox-ctrl-margin $mapbox-ctrl-margin 0;
+            position: absolute;
+            z-index: $mapbox-ctrl-zindex;
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            right: 0;
+            .mapboxgl-ctrl-group {
+                display: flex;
+                flex-direction: column;
+                border-radius: 4px;
+                background-color: $color-white;
+                border: 2px solid $color-grey-15;
+                &:nth-of-type(1) { /* fullscreen */
+                    order: 2;
+                    margin-top: 18px;
+                    button {
+                        border-radius: $mapbox-ctrl-radius;
+                    }
+                }
+                &:nth-of-type(2) { /* zoom controls */
+                    order: 1;
+                    button {
+                        border-radius: $mapbox-ctrl-radius $mapbox-ctrl-radius;
+                        &:nth-child(1) { /* zoom-in */
+                            order: 1;
+                        }
+                        &:nth-child(2) { /* zoom-out */
+                            order: 3;
+                        }
+                        &:nth-child(3) { /* reset */
+                            order: 2;
+                        }
+                    }
+                }
+                button {
+                    width: $button-width;
+                    height: $button-width;
+                    display: block;
+                    padding: 0;
+                    outline: none;
+                    border: 0;
+                    box-sizing: border-box;
+                    background-color: transparent;
+                    cursor: pointer;
+                    overflow: hidden;
+                    .mapboxgl-ctrl-icon {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        background-repeat: no-repeat;
+                        background-position: 50%;
+                    }
+                    &:hover, &:focus {
+                        z-index: $mapbox-ctrl-zindex-hover;
+                        outline: 4px solid $color-sun-yellow;
+                    }
+                    span {
+                        background-color: $color-white;
+                        &:hover {
+                            background-color: $color-black;
+                        }
+                    }
+                }
+                @include mapbox-ctrl-icon("zoom-out", "Zoom out");
+                @include mapbox-ctrl-icon("zoom-in", "Zoom in");
+                @include mapbox-ctrl-icon("fullscreen", "Maximise");
+                @include mapbox-ctrl-icon("shrink", "Minimise");
+                @include mapbox-ctrl-icon("reset", "Reset zoom") {
+                    &--disabled {
+                        // background-image: url("../img/reset-grey-icon.svg"); TODO
+                    }
+                }
+            }
+        }
+    }
+}
