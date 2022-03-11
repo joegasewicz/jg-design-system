@@ -1,5 +1,10 @@
 import { LngLatBoundsLike, LngLatLike, Map } from "mapbox-gl";
-interface IMapComponentOptions {
+export interface IMapComponent {
+    init: () => void;
+    readonly bounds: LngLatBoundsLike;
+    readonly map: Map;
+}
+export interface IMapComponentOptions {
     readonly style: string;
     readonly center: LngLatLike;
     readonly zoom?: number;

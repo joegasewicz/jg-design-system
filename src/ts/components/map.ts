@@ -1,12 +1,11 @@
 import { FullscreenControl, LngLatBoundsLike, LngLatLike, Map, NavigationControl } from "mapbox-gl";
-
-interface IMapComponent {
+export interface IMapComponent {
     init: () => void;
     readonly bounds: LngLatBoundsLike;
     readonly map: Map;
 }
 
-interface IMapComponentOptions {
+export interface IMapComponentOptions {
     readonly style: string;
     readonly center: LngLatLike;
     readonly zoom?: number;
@@ -136,7 +135,6 @@ export class MapComponent {
         this.zoom = zoom;
         this.token = token;
         this.mapID = mapID;
-
         this.map = new Map({
             container: this.mapID,
             style: this.style,

@@ -1,3 +1,3 @@
 import "../sass/index.scss";
-import { MapComponent } from "./components/map";
-export { MapComponent, };
+import { IMapComponent, IMapComponentOptions, MapComponent } from "./components/map";
+export { IMapComponent, IMapComponentOptions, MapComponent, };

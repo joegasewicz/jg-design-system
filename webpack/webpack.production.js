@@ -1,9 +1,9 @@
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-
 module.exports = ({}) => ({
     watch: false,
+    externals: ["mapbox-gl"],
     module: {
         rules: [
             {
@@ -15,11 +15,6 @@ module.exports = ({}) => ({
     plugins: [
         new webpack.EnvironmentPlugin({
             "process.env.NODE_ENV": "production", 
-         }),
-        new webpack.IgnorePlugin({
-            checkResource(resource) {
-                return (resource === "mapbox-gl");
-            }
-        }),
+         })
     ]
 });

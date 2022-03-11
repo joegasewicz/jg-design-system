@@ -34,6 +34,7 @@ module.exports = (args = { mode: "production", analyze: false }) => {
             filename: "index.js",
             path: path.resolve(__dirname, "../lib"),
             clean: true,
+            libraryTarget: 'umd',
         },
         plugins: [
             new webpack.ProgressPlugin(),
