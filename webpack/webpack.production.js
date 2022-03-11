@@ -16,5 +16,10 @@ module.exports = ({}) => ({
         new webpack.EnvironmentPlugin({
             "process.env.NODE_ENV": "production", 
          }),
+        new webpack.IgnorePlugin({
+            checkResource(resource) {
+                return (resource === "mapbox-gl");
+            }
+        }),
     ]
 });
